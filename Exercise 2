@@ -1,20 +1,33 @@
-#We start by creating an empty dictionary called balls.
-balls = {}
-#We read input until we receive the "End" command, splitting each line into a color and count using the colon and 
-#space as separators, and adding the color and count to the balls dictionary.
-# Read input until "End" command is received
-while True:
-    data = input()
-    if data == "End":
-        break
-    color, count = data.split(": ")
-    balls[color] = int(count)
-#Once we have all the counts, we calculate the total number of balls by summing all the values in the balls dictionary, 
-#and we subtract the largest value from that sum to get the smallest count of balls to remove. We can do this 
-#because removing the largest count will leave us with only one color in the box.
-# Find the smallest count of balls to remove
-smallest_count = sum(balls.values()) - max(balls.values())
-#Finally, we print the smallest count of balls to remove.
-print(smallest_count)
+import java.util.*;
 
-
+public class BallBox {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        //store the count of balls for each color.
+        Map<String, Integer> balls = new HashMap<>();
+        //keeps track of the total number of balls 
+        int totalBalls = 0;
+        String input = scanner.nextLine();
+        //reading all the input
+        while (!input.equals("End")) {
+            String[] tokens = input.split(": ");
+            String color = tokens[0];
+            int count = Integer.parseInt(tokens[1]);
+            balls.put(color, count);
+            totalBalls += count;
+            input = scanner.nextLine();
+        }
+        int smallestCount = Integer.MAX_VALUE;
+        //iterates over the count of balls for each color, computes the number 
+        //of balls that would remain if those balls were removed from the box, 
+        //and checks if this number is even and smaller than the current smallest count
+        for (int count : balls.values()) {
+            int remainingBalls = totalBalls - count;
+            if (remainingBalls % 2 == 0 && remainingBalls/2 < smallestCount) {
+                smallestCount = remainingBalls/2;
+            }
+        }
+        //prints the smallest count found
+        System.out.println(smallestCount);
+    }
+}
